@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import Layout from "./Layout"
 import Note from "./Note"
-import Login from "./pages/Login"
 import Registrasi from "./pages/Registrasi"
 import { getToken } from "./Api"
 import { useAuth } from './context/Auth'
+import Login from "./Pages/Login"
 // import { setTokens } from "./token"
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
                 <Route element={<Layout token={token} onLogout={handleLogout}/>}>
                     <Route path={"/Note"} element={<Note />} /> 
                     <Route path={"/Login"} element={<Login onLogin={handleLogin}/>} />
+                    <Route path={"/Registrasi"} element={<Registrasi/>}/>
                 </Route>
                 {/* {token !== null ? 
                     <Route>
