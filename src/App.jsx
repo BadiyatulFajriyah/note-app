@@ -32,9 +32,18 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Layout token={token} onLogout={handleLogout}/>}>
-                    <Route path={"/Note"} element={<Note />} /> 
-                    <Route path={"/Login"} element={<Login onLogin={handleLogin}/>} />
-                    <Route path={"/Registrasi"} element={<Registrasi/>}/>
+                    { isLoggedin ? (
+                        <Route path={"/Note"} element={<Note />} />,
+                        <Route path={"/Login"} element={<Navigate to="/Note"/>}/>
+                    ):(
+                        <>
+                        <Route path={"/Login"} element={<Login onLogin={handleLogin}/>} />
+                        <Route path={"/registrasi"} element={<Registrasi />}/>
+                        <Route path={"/*"} element={<Navigate to="/Login"/>}/>
+                        </>
+                    )}
+                    
+                    
                 </Route>
                 {/* {token !== null ? 
                     <Route>
@@ -56,11 +65,11 @@ function App() {
         </BrowserRouter>
 
     )
-}
+            }
 
 export default App
 
-// import { useEffect, useState } from "react"
+{/* // import { useEffect, useState } from "react"
 // import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 // import Layout from "./Layout"
 // import Note from "./Note"
@@ -172,4 +181,4 @@ export default App
 //         </BrowserRouter>
 //     )
 // }
-// export default App;
+// export default App; */}
