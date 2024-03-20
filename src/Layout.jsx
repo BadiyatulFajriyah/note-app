@@ -1,8 +1,8 @@
 import { Link, Outlet } from "react-router-dom"
 import { useAuth } from "./context/Auth"
 
-export default function Layout({ token, onLogout }) {
-    const {isLoggedin} = useAuth()
+export default function Layout() {
+    const {isLoggedin, doLogout} = useAuth()
     return (
         
         <>
@@ -15,10 +15,14 @@ export default function Layout({ token, onLogout }) {
                     ) }
                
                 <nav className="flex font-bold ">
-                    {token !== null ? null : <Link to={"/Registrasi"}><span className="mx-4 hover:text-white">Registrasi</span></Link>}
-                    {token !== null ? null : <Link to={"/Login"}><span className="mx-4 hover:text-white">Login</span></Link>}
-                    <Link to={"/note"}><span className="mx-4 hover:text-white">Notes</span></Link>
-                    {token !== null ? <Link onClick={() => onLogout()}><span className="mx-4 hover:text-white">Logout</span></Link> : null}
+                    {isLoggedin ? <>
+                        <Link to={"/note"}><span className="mx-4 hover:text-white">Notes</span></Link>
+                        <Link onClick={() => doLogout()}><span className="mx-4 hover:text-white">Logout</span></Link>
+                    </> : <>
+                     <Link to={"/Registrasi"}><span className="mx-4 hover:text-white">Registrasi</span></Link>
+                     <Link to={"/Login"}><span className="mx-4 hover:text-white">Login</span></Link>
+                    </> }
+
                 </nav>
             </div>
             <Outlet />

@@ -4,6 +4,8 @@ import { nanoid } from 'nanoid'
 import FormTambah from './FormTambah'
 import FormEdit from './FormEdit'
 import axios from 'axios'
+import { addNote, deleteNote, editNote, tampilkan } from './Api'
+
 
 
 function Note() {
@@ -12,7 +14,7 @@ function Note() {
 
   const handleFetchData = async () => {
     const apiFetch = await tampilkan();
-    setNotes(apiFetch.data.data ?? null)
+    setNotes(apiFetch.data.data.notes ?? null)
   }
 
   const handleAddData = async (title, content) => {
@@ -40,7 +42,7 @@ function Note() {
 
   useEffect(() => {
     handleFetchData()
-  }, [])
+  },[])
 
 
 

@@ -1,12 +1,12 @@
-import { createContext, useContext, useState } from "react"
-import { handleLogin, setTokens } from "../Api"
+import { createContext, useContext, useEffect, useState } from "react"
+import { getToken, handleLogin, removeToken, setTokens } from "../Api"
 
 
 //nilai default
-const initialAuthState ={
+const initialAuthState = {
     isLoggedin: false,
-    doLogin: () => {},
-    doLogout: () => {}
+    doLogin: () => { },
+    doLogout: () => { }
 }
 
 //buat context
@@ -14,20 +14,27 @@ const AuthContext = createContext(initialAuthState)
 
 //buat custom hook
 const useAuth = () => {
-    return useContext(AuthContext)  
+    return useContext(AuthContext)
 }
 
 //buat provider
-const AuthProvider = ({children}) => {  
+const AuthProvider = ({ children }) => {
     //state
     const [isLoggedin, setIsLoggedin] = useState(false)
+
+    useEffect(() => {
+        const token = getToken()
+        if (token != null){
+            setIsLoggedin(true)
+        }
+    }, [])
 
     //function
     const doLogin = async (email, password) => {
         //memanggil api dengan data email dan password
         console.log("akan melakukan login dengan :", email, password)
         //memanggil api menggunakan axios
-        const apiResult =  await handleLogin(email, password)
+        const apiResult = await handleLogin(email, password)
         console.log(apiResult)
         console.log(apiResult.data.data.accessToken)
 
@@ -36,21 +43,22 @@ const AuthProvider = ({children}) => {
         //simpan token ke dalam local storage
         setIsLoggedin(true)
         setTokens(apiResult.data.data.accessToken)
-        
+
     }
 
     const doLogout = () => {
         setIsLoggedin(false)
+       removeToken()
     }
 
     //return provider
-    return(
-        <AuthContext.Provider value={{isLoggedin, doLogin, doLogout}}>
+    return (
+        <AuthContext.Provider value={{ isLoggedin, doLogin, doLogout }}>
             {children}
         </AuthContext.Provider>
     )
 }
-    
+
 
 //export provider & hook
-export {AuthProvider, useAuth}
+export { AuthProvider, useAuth }
